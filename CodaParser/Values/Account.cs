@@ -16,14 +16,14 @@
             Helpers.ValidateStringLength(accountInfo, 37, "Account");
             Helpers.ValidateStringLength(accountNameInfo, 61, "AccountNameInfo");
 
-            var (accountIsIban, accountNumber, accountCurrency, accountCountry) =
+            AccountInfo aInfo =
                 AddAccountInfo(accountInfo, accountNumberTypeString);
             NumberType = new AccountNumberType(accountNumberTypeString);
             Name = new AccountName(accountNameInfo.Substring(0, 26));
             Description = new AccountDescription(accountNameInfo.Substring(26, 35));
-            Number = new AccountNumber(accountNumber, accountIsIban);
-            Currency = new Currency(accountCurrency);
-            Country = new Country(accountCountry);
+            Number = new AccountNumber(aInfo.AccountNumber, aInfo.AccountIsIban);
+            Currency = new Currency(aInfo.AccountCurrency);
+            Country = new Country(aInfo.AccountCountry);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@
         /// </summary>
         public AccountNumberType NumberType { get; }
 
-        private (bool, string, string, string) AddAccountInfo(string accountInfo, string accountType)
+        private AccountInfo AddAccountInfo(string accountInfo, string accountType)
         {
             var accountIsIban = false;
             var accountNumber = "";
@@ -88,7 +88,22 @@
                 accountCurrency = accountInfo.Substring(34, 3);
             }
 
-            return (accountIsIban, accountNumber, accountCurrency, accountCountry);
+            return new AccountInfo(accountIsIban, accountNumber, accountCurrency, accountCountry);
         }
+    }
+    public struct AccountInfo
+    {
+        public AccountInfo(bool accountIsIban, string accountNumber, string accountCurrency, string accountCountry)
+        {
+            AccountIsIban = accountIsIban;
+            AccountNumber = accountNumber;
+            AccountCurrency = accountCurrency;
+            AccountCountry = accountCountry;
+        }
+
+        public bool AccountIsIban { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountCurrency { get; set; }
+        public string AccountCountry { get; set; }
     }
 }

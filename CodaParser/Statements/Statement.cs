@@ -25,7 +25,7 @@ namespace CodaParser.Statements
             InitialBalance = initialBalance;
             NewBalance = newBalance;
             InformationalMessage = informationalMessage;
-            Transactions = Array.AsReadOnly(transactions.ToArray());
+            Transactions =  transactions.ToArray();
         }
 
         /// <summary>
